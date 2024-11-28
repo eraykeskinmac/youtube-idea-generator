@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.5.1",
     "@mantine/charts": "^7.14.2",
     "@mantine/core": "^7.14.2",
     "@mantine/dates": "^7.14.2",
