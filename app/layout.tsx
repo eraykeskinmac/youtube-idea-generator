@@ -10,6 +10,7 @@ import {
   MantineColorsTuple,
   MantineProvider,
 } from "@mantine/core";
+import { Navbar } from "@/components/Navbar/Navbar";
 
 const myColor: MantineColorsTuple = [
   "#ffeaec",
@@ -61,6 +62,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <MantineProvider defaultColorScheme="dark" theme={theme}>
+            <Navbar />
             {children}
           </MantineProvider>
         </body>
