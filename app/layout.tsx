@@ -1,8 +1,10 @@
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Notifications } from "@mantine/notifications";
 
 import {
   ColorSchemeScript,
@@ -62,6 +64,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <MantineProvider defaultColorScheme="dark" theme={theme}>
+            <Notifications />
             <Navbar />
             {children}
           </MantineProvider>
