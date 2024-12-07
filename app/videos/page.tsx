@@ -1,5 +1,5 @@
 import VideoList from "@/components/VideoList";
-import { getVideosForUser } from "@/server/db/queries";
+import { getVideosForUser } from "@/server/queries";
 
 export default async function VideosPage() {
   const videos = await getVideosForUser();

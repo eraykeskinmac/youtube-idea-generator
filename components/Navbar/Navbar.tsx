@@ -8,11 +8,11 @@ import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 // import { SettingsModal } from "./SettingsModal";
 import classes from "./Navbar.module.css";
+import { SettingsModal } from "../SettingsModal";
 
 const links = [
   { link: "/videos", label: "Video" },
   { link: "/ideas", label: "Ideas" },
-  { link: "/settings", label: "Settings" },
 ];
 
 export function Navbar() {
@@ -48,6 +48,7 @@ export function Navbar() {
             <Group gap={5} visibleFrom="xs">
               {items}
             </Group>
+            <SettingsModal />
             <UserButton
               appearance={{
                 elements: {
