@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Modal, Button, TextInput, ScrollArea, Paper, Card, Group } from "@mantine/core";
+import {
+  Modal,
+  Button,
+  TextInput,
+  ScrollArea,
+  Card,
+  Group,
+} from "@mantine/core";
 import { IconPlus, IconX } from "@tabler/icons-react";
 
 import { YouTubeChannelType } from "@/server/db/schema";
@@ -134,21 +141,17 @@ export function SettingsModal() {
             ) : (
               <ScrollArea h={150}>
                 {channels.map((channel) => (
-                  <Card
-                    key={channel.id}
-                    p="sm"
-                    mb="xs"
-                  >
+                  <Card key={channel.id} p="sm" mb="xs">
                     <Group justify="space-between">
-                    <span>{channel.name}</span>
-                    <Button
-                      variant="subtle"
-                      color="red"
-                      onClick={() => removeChannel(channel.id)}
-                      disabled={isLoading}
-                    >
-                      <IconX size={16} />
-                    </Button>
+                      <span>{channel.name}</span>
+                      <Button
+                        variant="subtle"
+                        color="red"
+                        onClick={() => removeChannel(channel.id)}
+                        disabled={isLoading}
+                      >
+                        <IconX size={16} />
+                      </Button>
                     </Group>
                   </Card>
                 ))}
