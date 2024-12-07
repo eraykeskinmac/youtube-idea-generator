@@ -106,7 +106,7 @@ export default function VideoList({
 
   return (
     <Container size="xl">
-      <Group justify="space-between" mb="xl">
+      <Group justify="space-between" my="xl">
         <Title order={1}>Videos</Title>
         <Button
           onClick={handleScrape}
@@ -128,18 +128,6 @@ export default function VideoList({
               style={{ textDecoration: "none" }}
             >
               <Card padding="md" radius="md" withBorder>
-                {/* {video.thumbnailUrl ? (
-                    <Image
-                      src={video.thumbnailUrl}
-                      alt={video.title}
-                      fill
-                      style={{ objectFit: "cover" }}
-                    />
-                  ) : (
-                    <Center bg="gray.1" h="100%">
-                      <Text c="dimmed">No thumbnail</Text>
-                    </Center>
-                  )} */}
                 <Card.Section>
                   {video.thumbnailUrl ? (
                     <Image
