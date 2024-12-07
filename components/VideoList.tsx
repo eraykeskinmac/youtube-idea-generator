@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Video } from "@/server/db/schema";
-// import { scrapeVideos } from "@/server/youtube-actions";
 import { formatDistanceToNow } from "date-fns";
 import { IconLoader2, IconDeviceTv } from "@tabler/icons-react";
 import {
+  Image,
   Button,
   Container,
   Title,
@@ -16,12 +15,11 @@ import {
   Card,
   Group,
   Stack,
-  AspectRatio,
   Center,
-  Flex,
 } from "@mantine/core";
 import { formatCount } from "@/lib/utils";
 import { notifications } from "@mantine/notifications";
+import { scrapeVideos } from "@/server/youtube-action";
 
 export default function VideoList({
   initialVideos,
@@ -31,41 +29,43 @@ export default function VideoList({
   const [isScraping, setIsScraping] = useState(false);
   const [videos, setVideos] = useState(initialVideos);
 
-  // const handleScrape = async () => {
-  //   setIsScraping(true);
-  //   try {
-  //     const newVideos = await scrapeVideos();
-  //     setVideos((prevVideos) => [...newVideos, ...prevVideos]);
-  //     notifications.show({
-  //       title: "Scrape Successful",
-  //       message: `Scraped ${newVideos.length} new videos`,
-  //       autoClose: 4000,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error scraping videos:", error);
-  //     let errorMessage = "An unknown error occurred";
+  console.log("videos", videos);
 
-  //     if (error instanceof Error) {
-  //       if (error.message.includes("No channels found for the user")) {
-  //         errorMessage =
-  //           "Please add YouTube channels first by clicking settings in the top right.";
-  //       } else {
-  //         errorMessage = error.message;
-  //       }
-  //     }
+  const handleScrape = async () => {
+    setIsScraping(true);
+    try {
+      const newVideos = await scrapeVideos();
+      setVideos((prevVideos) => [...newVideos, ...prevVideos]);
+      notifications.show({
+        title: "Scrape Successful",
+        message: `Scraped ${newVideos.length} new videos`,
+        autoClose: 4000,
+      });
+    } catch (error) {
+      console.error("Error scraping videos:", error);
+      let errorMessage = "An unknown error occurred";
 
-  //     console.log("errorMessage", errorMessage);
-  //     notifications.show({
-  //       color: "red",
-  //       title: "Scrape Failed",
-  //       message: errorMessage,
-  //       variant: "danger",
-  //       autoClose: 4000,
-  //     });
-  //   } finally {
-  //     setIsScraping(false);
-  //   }
-  // };
+      if (error instanceof Error) {
+        if (error.message.includes("No channels found for the user")) {
+          errorMessage =
+            "Please add YouTube channels first by clicking settings in the top right.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+
+      console.log("errorMessage", errorMessage);
+      notifications.show({
+        color: "red",
+        title: "Scrape Failed",
+        message: errorMessage,
+        variant: "danger",
+        autoClose: 4000,
+      });
+    } finally {
+      setIsScraping(false);
+    }
+  };
 
   useEffect(() => {
     setVideos(initialVideos);
@@ -73,7 +73,7 @@ export default function VideoList({
 
   if (videos.length === 0) {
     return (
-      <Center py='xl'>
+      <Center py="xl">
         <Stack align="center" gap="md">
           <Center
             style={{
@@ -90,7 +90,7 @@ export default function VideoList({
             comments will be analyzed for content ideas.
           </Text>
           <Button
-            // onClick={handleScrape}
+            onClick={handleScrape}
             disabled={isScraping}
             color="red"
             size="md"
@@ -109,7 +109,7 @@ export default function VideoList({
       <Group justify="space-between" mb="xl">
         <Title order={1}>Videos</Title>
         <Button
-          // onClick={handleScrape}
+          onClick={handleScrape}
           disabled={isScraping}
           color="red"
           size="md"
@@ -127,42 +127,35 @@ export default function VideoList({
               href={`/video/${video.id}`}
               style={{ textDecoration: "none" }}
             >
-              <Card
-                padding="md"
-                radius="md"
-                withBorder
-                style={{
-                  transition: "transform 300ms",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                  },
-                }}
-              >
+              <Card padding="md" radius="md" withBorder>
+                {/* {video.thumbnailUrl ? (
+                    <Image
+                      src={video.thumbnailUrl}
+                      alt={video.title}
+                      fill
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <Center bg="gray.1" h="100%">
+                      <Text c="dimmed">No thumbnail</Text>
+                    </Center>
+                  )} */}
                 <Card.Section>
-                  <AspectRatio ratio={16 / 9}>
-                    {video.thumbnailUrl ? (
-                      <Image
-                        src={video.thumbnailUrl}
-                        alt={video.title}
-                        fill
-                        style={{ objectFit: "cover" }}
-                      />
-                    ) : (
-                      <Center bg="gray.1" h="100%">
-                        <Text c="dimmed">No thumbnail</Text>
-                      </Center>
-                    )}
-                  </AspectRatio>
+                  {video.thumbnailUrl ? (
+                    <Image
+                      src={video.thumbnailUrl}
+                      style={{ objectFit: "cover" }}
+                      height={160}
+                      alt={video.title}
+                    />
+                  ) : (
+                    <Center bg="gray.1" h="100%">
+                      <Text c="dimmed">No thumbnail</Text>
+                    </Center>
+                  )}
                 </Card.Section>
-
                 <Stack mt="md" gap="xs">
-                  <Text
-                    lineClamp={2}
-                    fw={600}
-                    style={{
-                      "&:hover": { color: "var(--mantine-color-red-6)" },
-                    }}
-                  >
+                  <Text lineClamp={2} fw={600}>
                     {video.title}
                   </Text>
                   <Text size="xs" c="dimmed">
